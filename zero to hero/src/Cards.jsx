@@ -7,7 +7,7 @@ function Cards(props) {
         <div className="w-64 h-80 rounded-lg overflow-hidden shadow-lg bg-gray-800 transition-shadow duration-300 ease-in-out hover:shadow-xl flex flex-col">
           <div className="relative h-full w-full flex justify-center items-center bg-gray-200 overflow-hidden">
             <img
-              className="mx-auto w-[100%] my-auto h-full object-cover object-center text-center hover:scale-105 duration-[0.4s]"
+              className="mx-auto w-[100%] my-auto h-full object-cover object-center text-center hover:scale-105 duration-[0.35s]"
               src={
                 props.img ||
                 "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
