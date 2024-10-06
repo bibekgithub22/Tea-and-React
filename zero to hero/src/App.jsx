@@ -1,8 +1,33 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Cards from "./Cards";
 import BgBtn from "./BgBtn";
 
 function App() {
+  //Password Generator UseSates
+  const [length, setLength] = useState(8);
+  const [numberAllowed, setNumberAllowed] = useState(false);
+  const [charAllowed, setCharAllowed] = useState(false);
+  const [password, setPassword] = useState("");
+  const passwordGenerator = useCallback(() => {
+    let pass = "";
+    let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    if (numberAllowed) {
+      str += "0123456789";
+    }
+    if (charAllowed) {
+      str += "!@#$%&_";
+    }
+    for (let i = 1; i <= length; i++) {
+      let char = Math.floor(Math.random() * str.length + 1);
+      pass += str.charAt(char);
+    }
+    setPassword(pass);
+  }, [length, numberAllowed, charAllowed, setPassword]);
+  useEffect(() => {
+    passwordGenerator();
+  }, [length, numberAllowed, charAllowed, passwordGenerator]);
+  ///////////////
+  //////////////
   const [color, setColor] = useState(""); //Background Color Changer
 
   const [counter, setCounter] = useState(6); //Counter Updater
@@ -68,6 +93,61 @@ function App() {
           <BgBtn colorName="RebeccaPurple" set={setColor} />
           <BgBtn colorName="DarkSlateGray" set={setColor} />
           <BgBtn colorName="MidnightBlue" set={setColor} />
+        </div>
+      </div>
+
+      <div className="h-screen flex flex-col items-center w-auto bg-slate-800 pt-28">
+        <h1 className="text-3xl mb-5">Password Generator</h1>
+        <div className="w-[32rem] h-[auto] bg-gray-600 rounded-lg text-center py-5 px-5">
+          <div className="flex shadow rounded-lg overflow-hidden ">
+            <input
+              type="text"
+              value={password}
+              className="outline-none w-full py-1 px-3 text-slate-950"
+              placeholder="password"
+              readOnly
+            />
+            <button className="bg-blue-700 px-3 hover:bg-blue-600 duration-300 shrink-0">
+              Copy
+            </button>
+          </div>
+          <div className="flex text-sm gap-x-2 text-orange-500">
+            <div className="flex items-center gap-x-1">
+              <input
+                type="range"
+                min={6}
+                max={20}
+                value={length}
+                className="cursor-pointer"
+                onChange={(e) => {
+                  setLength(e.target.value);
+                }}
+              />
+              <label>Length:{length}</label>
+            </div>
+            <div className="flex items-center gap-x-1">
+              <input
+                type="checkbox"
+                defaultChecked={numberAllowed}
+                id="numberInput"
+                onChange={() => {
+                  setNumberAllowed((prev) => !prev);
+                }}
+              />
+              <label htmlFor="numberInput">Numbers</label>
+            </div>
+            <div className="flex items-center gap-x-1">
+              <input
+                type="checkbox"
+                defaultChecked={charAllowed}
+                id="charInput"
+                onChange={() => {
+                  setCharAllowed((prev) => !prev);
+                }}
+              />
+              <label htmlFor="charInput">Characters</label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
